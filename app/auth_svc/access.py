@@ -1,5 +1,5 @@
 import requests
-from config import Config
+from flask import current_app
 
 def login(request):
     auth = request.authorization
@@ -9,7 +9,7 @@ def login(request):
     basicAuth = (auth.username, auth.password)
 
     response = requests.post(
-        f"http://{Config.AUTH_SVC_ADDRESS}/login",
+        f"http://{current_app.config['AUTH_SVC_ADDRESS']}/login",
         auth=basicAuth
     )
 
