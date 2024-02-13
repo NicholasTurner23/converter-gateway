@@ -1,12 +1,12 @@
-import os, gridfs, pika, json
-from flask import Flask, request
+import gridfs, pika
+from flask import Flask
 from config import Config
 from flask_pymongo import PyMongo
-from auth import validate
-from auth_svc import access
-from storage import util
+
 
 mongo = PyMongo()
+channel = ""
+fs = ""
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -14,17 +14,24 @@ def create_app(config_class=Config):
 
     fs = gridfs.GridFS(mongo.db)
 
-    connection = pika.BlockingConnection(pika,ConnectionParameters("rabbitmq"))
+    connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
     channel = connection.channel()
 
     # #Blue prints
-    # from app.main import bp as main_bp
-    # app.register_blueprint(main_bp)
+    from app.auth import authpb as auth_bp
+    app.register_blueprint(auth_bp)
 
-    # return app
+    from app.auth_svc import authsvcpb as authsvc_bp
+    app.register_blueprint(authsvc_bp,  url_prefix="/login")
 
-# def get_db():
-#     return db.connection.cursor()
+    from app.updownload import updown as uploads_bp
+    app.register_blueprint(uploads_bp)
+    
 
-# if __name__ == "__main__":
-#     create_app().run(host="0.0.0.0", port=5000)
+    return app
+
+def get_channel():
+    return channel
+
+def get_fs():
+    return fs
