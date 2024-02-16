@@ -14,8 +14,8 @@ def create_app(config_class=Config):
 
     fs = gridfs.GridFS(mongo.db)
 
-    connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
-    channel = connection.channel()
+    #connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
+    #channel = connection.channel()
 
     # #Blue prints
     from app.auth import authpb as auth_bp

@@ -1,0 +1,4 @@
+.github*
+.env
+__mypy*
+__pycache__

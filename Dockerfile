@@ -13,5 +13,3 @@ COPY . /app
 EXPOSE 8080
 
 CMD ["flask", "run", "--port", "8080"]
-
-2:43:37
