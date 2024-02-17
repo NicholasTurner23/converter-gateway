@@ -5,17 +5,11 @@ from flask_pymongo import PyMongo
 
 
 mongo = PyMongo()
-channel = ""
-fs = ""
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    mongo.init_app(app)
-
-    fs = gridfs.GridFS(mongo.db)
-
-    connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
-    channel = connection.channel()
+    mongo.init_app(app, uri="mongodb://host.docker.internal:27017/videos")
 
     # #Blue prints
     from app.auth import authpb as auth_bp
@@ -30,8 +24,3 @@ def create_app(config_class=Config):
 
     return app
 
-def get_channel():
-    return channel
-
-def get_fs():
-    return fs
