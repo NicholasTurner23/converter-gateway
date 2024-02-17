@@ -1,15 +1,16 @@
-import gridfs, pika
 from flask import Flask
 from config import Config
 from flask_pymongo import PyMongo
 
 
-mongo = PyMongo()
+mongo_video = PyMongo()
+mongo_mp3 = PyMongo()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    mongo.init_app(app, uri="mongodb://host.docker.internal:27017/videos")
+    mongo_video.init_app(app, uri="mongodb://host.docker.internal:27017/videos")
+    mongo_mp3.init_app(app, uri="mongodb://host.docker.internal:27017/mp3s")
 
     # #Blue prints
     from app.auth import authpb as auth_bp
